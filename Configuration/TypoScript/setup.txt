@@ -1,0 +1,16 @@
+includeLibs.tx_rnbase_controller = EXT:rn_base/class.tx_rnbase_controller.php
+
+plugin.tx_mkabtesting                	= USER
+plugin.tx_mkabtesting.flexform       	= Configuration/Flexform/actions.xml
+plugin.tx_mkabtesting.userFunc       	= tx_rnbase_controller->main
+plugin.tx_mkabtesting.defaultAction  	= Tx_Mkabtesting_Action_ShowContentElements
+plugin.tx_mkabtesting.qualifier      	= mkabtesting
+plugin.tx_mkabtesting.templatePath   	= EXT:mkabtesting/Resources/Private/Templates/Html
+plugin.tx_mkabtesting.locallangFilename 	= EXT:mkabtesting/Resources/Private/Language/actions.xml
+plugin.tx_mkabtesting.extensionKey   	= mkabtesting
+
+tt_content.list.20.tx_mkabtesting    =< plugin.tx_mkabtesting
+
+plugin.tx_mkabtesting{
+	showContentElements.toUserInt = 1
+}
