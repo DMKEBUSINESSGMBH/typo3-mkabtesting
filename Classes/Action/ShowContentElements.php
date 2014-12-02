@@ -126,9 +126,10 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 	 * @return boolean
 	 */
 	private function elementsInCookieStillValid() {
-		return empty(array_diff(
+		$invalidElements = array_diff(
 			$this->getCookieValuesAsArray(), $this->getAllConfiguredContentElements()
-		));
+		);
+		return empty($invalidElements);
 	}
 
 	/**
