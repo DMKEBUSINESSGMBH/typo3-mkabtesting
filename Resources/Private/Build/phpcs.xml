@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="Ruleset">
+    <description>rule set for PHP_CodeSniffer</description>
+    <!-- install ruleset @see https://github.com/typo3-ci/TYPO3CMS -->
+    <rule ref="TYPO3CMS">
+    	<exclude name="TYPO3SniffPool.Files.Filename.ClassnameNotEqualToFilename"/>
+    </rule>
+</ruleset>
