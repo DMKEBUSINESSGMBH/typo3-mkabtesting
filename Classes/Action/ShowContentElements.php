@@ -32,6 +32,8 @@
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 
 /**
+ * Tx_Mkabtesting_Action_ShowContentElements
+ *
  * @package TYPO3
  * @subpackage tx_mkabtesting
  */
@@ -252,6 +254,7 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 	/**
 	 * @param string $value
 	 * @param int $expire
+	 * @return void
 	 */
 	protected function setCookie($value, $expire) {
 		setcookie($this->getCookieName(), $value, $expire);

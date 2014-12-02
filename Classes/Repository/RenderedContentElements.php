@@ -29,6 +29,8 @@
 tx_rnbase::load('tx_mklib_repository_Abstract');
 
 /**
+ * Tx_Mkabtesting_Repository_RenderedContentElements
+ *
  * @package TYPO3
  * @subpackage tx_mkabtesting
  */

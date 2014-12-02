@@ -24,7 +24,11 @@
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
+ * Tx_Mkabtesting_Util_Wizicon
+ *
  * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
+ * @package TYPO3
+ * @subpackage tx_mkabtesting
  */
 class Tx_Mkabtesting_Util_Wizicon {
 
@@ -34,16 +38,17 @@ class Tx_Mkabtesting_Util_Wizicon {
 	 * @param array Input array with wizard items for plugins
 	 * @return array Modified input array, having the items for plugin added.
 	 */
-	public function proc($wizardItems)	{
-		global $LANG;
-
-		$LL = $this->includeLocalLang();
+	public function proc($wizardItems) {
+		$localLang = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_mkabtesting'] = array(
-			'icon'=>t3lib_extMgm::extRelPath('mkabtesting').'/ext_icon.gif',
-			'title'=>$LANG->getLLL('plugin.mkabtesting.label',$LL),
-			'description'=>$LANG->getLLL('plugin.mkabtesting.description',$LL),
-			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=tx_mkabtesting'
+			'icon' => t3lib_extMgm::extRelPath('mkabtesting') . '/ext_icon.gif',
+			'title' => $GLOBALS['LANG']->getLLL('plugin.mkabtesting.label', $localLang),
+			'description' => $GLOBALS['LANG']->getLLL(
+				'plugin.mkabtesting.description', $localLang
+			),
+			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]' .
+						'=tx_mkabtesting'
 		);
 
 		return $wizardItems;
@@ -51,18 +56,17 @@ class Tx_Mkabtesting_Util_Wizicon {
 
 	/**
 	 *
-	 * @return Ambigous <multitype:, string, multitype:unknown string , multitype:multitype: NULL Ambigous <string, NULL> Ambigous <unknown, string, Ambigous <NULL, Ambigous <string, NULL>, multitype:>> >
+	 * @return array
 	 */
-	protected function includeLocalLang()	{
+	protected function includeLocalLang() {
 		$llFile = t3lib_extMgm::extPath('mkabtesting') . '/Resources/Private/Language/flexform.xml';
 		if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
 			$llXmlParser = tx_rnbase::makeInstance('t3lib_l10n_parser_Llxml');
-			$LOCAL_LANG =  $llXmlParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
-		}
-		else {
-			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+			$localLang =  $llXmlParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
+		} else {
+			$localLang = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		}
 
-		return $LOCAL_LANG;
+		return $localLang;
 	}
 }

@@ -29,8 +29,10 @@
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 /**
+ * Tx_Mkabtesting_Search_RenderedContentElements
+ *
  * @package TYPO3
- * @subpackage tx_abtesting
+ * @subpackage tx_mkabtesting
  */
 class Tx_Mkabtesting_Search_RenderedContentElements extends tx_rnbase_util_SearchBase {
 
@@ -47,7 +49,7 @@ class Tx_Mkabtesting_Search_RenderedContentElements extends tx_rnbase_util_Searc
 	 * useAlias()
 	 */
 	protected function useAlias() {
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -79,7 +81,6 @@ class Tx_Mkabtesting_Search_RenderedContentElements extends tx_rnbase_util_Searc
 	 */
 	protected function getJoins($tableAliases) {
 		$join = '';
-		$tableMappings = $this->getTableMappings();
 
 		return $join;
 

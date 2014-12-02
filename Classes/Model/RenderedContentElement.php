@@ -29,6 +29,8 @@
 tx_rnbase::load('tx_rnbase_model_base');
 
 /**
+ * Tx_Mkabtesting_Model_RenderedContentElement
+ *
  * @package TYPO3
  * @subpackage tx_mkabtesting
  */
