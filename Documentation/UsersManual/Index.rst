@@ -19,7 +19,8 @@ how many elements should be shown to the user and how long the content elements 
 the same for a user.
 
 The plugin selects the elements to be shown from that set of content elements. The
-selection is made evenly distributed.
+selection is made evenly distributed. The elements that have be shown the least are
+selected first.
 
 To analyse and track the user experience you could use tools like piwik.
 For example every content element could have a link with a specific piwik variable.
