@@ -482,7 +482,7 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
 		);
 		$action->setConfigurations($configurations);
 
-		$parameters = $viewData = arNULL;
+		$parameters = $viewData = NULL;
 		$this->assertEquals(
 			'erstes element zweites element',
 			$this->callInaccessibleMethod(
