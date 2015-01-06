@@ -16,7 +16,9 @@ Users manual
 
 You have to provide a campaign identifier, the set of possible content elements,
 how many elements should be shown to the user and how long the content elements should stay
-the same for a user.
+the same for a user. The content elements should not be referenced in the page itself.
+Otherwise they would all be displayed. Instead they should only be visible in the list
+module. The display of the elements is done with the plugin.
 
 The plugin selects the elements to be shown from that set of content elements. The
 selection is made evenly distributed. The elements that have be shown the least are
