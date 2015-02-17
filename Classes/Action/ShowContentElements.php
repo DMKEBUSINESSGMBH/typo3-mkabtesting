@@ -258,6 +258,9 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 	 * @return void
 	 */
 	protected function setCookie($value, $expire) {
-		setcookie($this->getCookieName(), $value, $expire);
+		setcookie(
+			$this->getCookieName(), $value, $expire, '/',
+			t3lib_div::getIndpEnv('HTTP_HOST'), FALSE, TRUE
+		);
 	}
 }
