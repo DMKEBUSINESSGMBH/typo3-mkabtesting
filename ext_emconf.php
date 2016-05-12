@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'MK A/B Testing',
-	'description' => '',
+	'description' => 'A/B Testing of content elements',
 	'category' => 'plugin',
 	'author' => 'Hannes Bochmann',
 	'author_company' => 'DMK E-BUSINESS GmbH',
@@ -31,9 +31,9 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '1.0.4',
 	'constraints' => array(
 		'depends' => array(
-			'rn_base' => '',
-			'mklib' => '',
-			'typo3' => '4.5.0-6.2.99',
+			'rn_base' => '1.0.8-',
+			'mklib' => '2.0.2-',
+			'typo3' => '4.5.0-7.6.99',
 		),
 		'conflicts' => array(
 		),
