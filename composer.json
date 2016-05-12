@@ -1,0 +1,35 @@
+{
+	"name" : "dmk/mkabtesting",
+	"description" : "A/B Testing of content elements",
+	"version" : "1.0.4",
+	"type" : "typo3-cms-extension",
+	"keywords" : [
+		"AB test",
+		"split test",
+		"multivariate testing",
+		"conversion rate",
+		"experience optimization"
+	],
+	"homepage" : "http://www.dmk-ebusiness.de/",
+	"license" : "GPL-2.0+",
+	"authors" : [{
+		"name" : "Hannes Bochmann",
+		"email" : "hannes.bochmann@dmk-ebusiness.de",
+		"role" : "Developer"
+	}],
+	"support" : {
+		"email" : "dev@dmk-ebusiness.de",
+		"source" : "https://github.com/DMKEBUSINESSGMBH/typo3-mkabtesting",
+		"issues": "https://github.com/DMKEBUSINESSGMBH/typo3-mkabtesting"
+	},
+	"replace" : {
+		"typo3-ter/mkabtesting" : "*"
+	},
+	"require" : {
+		"typo3/cms-core" : ">=4.5.0 <=7.6.99",
+		"digedag/rn-base" : ">=1.0.8"
+	},
+	"autoload": {
+		"classmap": ["Classes/"]
+	}
+}
