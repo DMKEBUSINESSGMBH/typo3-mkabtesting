@@ -25,11 +25,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
+tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Tx_Mkabtesting_Action_ShowContentElements
@@ -136,7 +134,7 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 	 * @return Ambigous <multitype:, string, multitype:unknown >
 	 */
 	private function getCookieValuesAsArray() {
-		return t3lib_div::trimExplode(
+		return tx_rnbase_util_Strings::trimExplode(
 			',', $_COOKIE[$this->getCookieName()]
 		);
 	}
@@ -168,7 +166,7 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 	 * @return array
 	 */
 	protected function getAllConfiguredContentElements() {
-		return t3lib_div::trimExplode(
+		return tx_rnbase_util_Strings::trimExplode(
 				',',
 				$this->getConfigurations()->get($this->getConfId() . 'elements'),
 				TRUE
@@ -260,7 +258,7 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 	protected function setCookie($value, $expire) {
 		setcookie(
 			$this->getCookieName(), $value, $expire, '/',
-			t3lib_div::getIndpEnv('HTTP_HOST'), FALSE, TRUE
+			tx_rnbase_util_Misc::getIndpEnv('HTTP_HOST'), FALSE, TRUE
 		);
 	}
 }

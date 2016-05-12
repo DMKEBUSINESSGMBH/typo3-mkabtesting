@@ -2,6 +2,7 @@
 if (!defined ('TYPO3_MODE')) {
   die ('Access denied.');
 }
+tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
 
 $_EXTKEY = 'mkabtesting';
 
@@ -49,7 +50,7 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array (
 				'maxitems' => 1,
 				'minitems' => 1,
 				'maxitems' => 0,
-				'wizards' => tx_mklib_util_TCA::getWizards('', array('suggest')),
+				'wizards' => Tx_Rnbase_Utility_TcaTool::getWizards('', array('suggest')),
 			),
 		),
 	),

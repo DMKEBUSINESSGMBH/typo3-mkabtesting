@@ -14,13 +14,14 @@
 
 				<type>array</type>
 				<el>
-					<action> 
+					<action>
 						<TCEforms>
 							<exclude>1</exclude>
 							<label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.action
 							</label>
 							<config>
 								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.action.ShowContentElements</numIndex>

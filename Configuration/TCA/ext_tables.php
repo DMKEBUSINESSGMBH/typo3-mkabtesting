@@ -20,8 +20,8 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array (
 		'enablecolumns' 	=> array (
 			'disabled' => 'hidden',
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'Configuration/TCA/tx_mkabtesting_rendered_content_elements.php',
-		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Public/Img/Icons/tca_table.gif',
+		'dynamicConfigFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'Configuration/TCA/tx_mkabtesting_rendered_content_elements.php',
+		'iconfile'          => 'EXT:mkabtesting/Resources/Public/Img/Icons/tca_table.gif',
 		'dividers2tabs'     => true,
 		'searchFields'		=> 'campaign_identifier,elements'
 	)

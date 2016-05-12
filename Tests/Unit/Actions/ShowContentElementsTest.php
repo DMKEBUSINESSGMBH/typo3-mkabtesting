@@ -29,6 +29,7 @@
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Mkabtesting_Action_ShowContentElements');
 tx_rnbase::load('Tx_Mkabtesting_Repository_RenderedContentElements');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * @package TYPO3
@@ -445,7 +446,7 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
 	 */
 	public function testHandleRequestRendersElementsCorrect() {
 		$contentObject = $this->getMock(
-			'tslib_cObj',
+			tx_rnbase_util_Typo3Classes::getContentObjectRendererClass(),
 			array('RECORDS')
 		);
 
