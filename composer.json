@@ -23,11 +23,13 @@
 		"issues": "https://github.com/DMKEBUSINESSGMBH/typo3-mkabtesting"
 	},
 	"replace" : {
-		"typo3-ter/mkabtesting" : "*"
+		"mkabtesting" : "self.version",
+		"typo3-ter/mkabtesting" : "self.version"
 	},
 	"require" : {
 		"typo3/cms-core" : ">=4.5.0 <=7.6.99",
-		"digedag/rn-base" : ">=1.0.4"
+		"typo3-ter/mklib" : ">=2.0.2",
+		"typo3-ter/rn-base" : ">=1.0.4"
 	},
 	"autoload": {
 		"classmap": ["Classes/"]
