@@ -1,7 +1,7 @@
 {
 	"name" : "dmk/mkabtesting",
 	"description" : "A/B Testing of content elements",
-	"version" : "2.0.2",
+	"version" : "2.0.3",
 	"type" : "typo3-cms-extension",
 	"keywords" : [
 		"AB test",
