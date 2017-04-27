@@ -487,7 +487,8 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
 		$this->assertEquals(
 			'erstes element zweites element',
 			$this->callInaccessibleMethod(
-				$action, 'handleRequest', $parameters, $configurations, $viewData
+				array($action, 'handleRequest'),
+				array(&$parameters, &$configurations, &$viewData)
 			),
 			'falsche element uids in array'
 		);
