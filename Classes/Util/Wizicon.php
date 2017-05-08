@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load( 'tx_rnbase_util_Wizicon' );
+tx_rnbase::load('tx_rnbase_util_Wizicon');
 
 /**
  * Tx_Mkabtesting_Util_Wizicon
@@ -30,25 +30,28 @@ tx_rnbase::load( 'tx_rnbase_util_Wizicon' );
  * @package TYPO3
  * @subpackage tx_mkabtesting
  */
-class Tx_Mkabtesting_Util_Wizicon extends tx_rnbase_util_Wizicon {
+class Tx_Mkabtesting_Util_Wizicon extends tx_rnbase_util_Wizicon
+{
 
-	/**
-	 * @return array
-	 */
-	protected function getPluginData() {
-		return array(
-			'tx_mkabtesting' => array(
-				'icon'        => tx_rnbase_util_Extensions::extRelPath( 'mkabtesting' ) . 'ext_icon.gif',
-				'title'       => 'plugin.mkabtesting.label',
-				'description' => 'plugin.mkabtesting.description'
-			)
-		);
-	}
+    /**
+     * @return array
+     */
+    protected function getPluginData()
+    {
+        return array(
+            'tx_mkabtesting' => array(
+                'icon'        => tx_rnbase_util_Extensions::extRelPath('mkabtesting') . 'ext_icon.gif',
+                'title'       => 'plugin.mkabtesting.label',
+                'description' => 'plugin.mkabtesting.description'
+            )
+        );
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getLLFile() {
-		return tx_rnbase_util_Extensions::extPath('mkabtesting') . 'Resources/Private/Language/flexform.xml';
-	}
+    /**
+     * @return string
+     */
+    protected function getLLFile()
+    {
+        return tx_rnbase_util_Extensions::extPath('mkabtesting') . 'Resources/Private/Language/flexform.xml';
+    }
 }

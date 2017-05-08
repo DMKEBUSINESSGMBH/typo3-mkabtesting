@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package TYPO3
- *  @subpackage tx_mkabtesting
- *  @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mkabtesting
+ * @author Hannes Bochmann <dev@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
@@ -35,83 +35,90 @@ tx_rnbase::load('Tx_Mkabtesting_Search_RenderedContentElements');
  * @author Hannes Bochmann <dev@dmk-ebusiness.de>
  */
 class Tx_Mkabtesting_Search_RenderedContentElementsTest
-	extends tx_rnbase_tests_BaseTestCase
+    extends tx_rnbase_tests_BaseTestCase
 {
 
-	/**
-	 * @group unit
-	 */
-	public function testGetTableMappings() {
-		$this->assertEquals(
-			array('CONTENTELEMENT' =>'tx_mkabtesting_rendered_content_elements'),
-			$this->callInaccessibleMethod(
-				tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
-				'getTableMappings'
-			)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetTableMappings()
+    {
+        $this->assertEquals(
+            array('CONTENTELEMENT' => 'tx_mkabtesting_rendered_content_elements'),
+            $this->callInaccessibleMethod(
+                tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
+                'getTableMappings'
+            )
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testUseAlias() {
-		$this->assertTrue(
-			$this->callInaccessibleMethod(
-				tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
-				'useAlias'
-			)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testUseAlias()
+    {
+        $this->assertTrue(
+            $this->callInaccessibleMethod(
+                tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
+                'useAlias'
+            )
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetBaseTableAlias() {
-		$this->assertEquals(
-			'CONTENTELEMENT',
-			$this->callInaccessibleMethod(
-				tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
-				'getBaseTableAlias'
-			)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetBaseTableAlias()
+    {
+        $this->assertEquals(
+            'CONTENTELEMENT',
+            $this->callInaccessibleMethod(
+                tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
+                'getBaseTableAlias'
+            )
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetBaseTable() {
-		$this->assertEquals(
-			'tx_mkabtesting_rendered_content_elements',
-			$this->callInaccessibleMethod(
-				tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
-				'getBaseTable'
-			)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetBaseTable()
+    {
+        $this->assertEquals(
+            'tx_mkabtesting_rendered_content_elements',
+            $this->callInaccessibleMethod(
+                tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
+                'getBaseTable'
+            )
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetWrapperClass() {
-		$this->assertEquals(
-			'Tx_Mkabtesting_Model_RenderedContentElement',
-			$this->callInaccessibleMethod(
-				tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
-				'getWrapperClass'
-			)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetWrapperClass()
+    {
+        $this->assertEquals(
+            'Tx_Mkabtesting_Model_RenderedContentElement',
+            $this->callInaccessibleMethod(
+                tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
+                'getWrapperClass'
+            )
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetJoins() {
-		$this->assertEquals(
-			'',
-			$this->callInaccessibleMethod(
-				tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
-				'getJoins', array()
-			)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetJoins()
+    {
+        $this->assertEquals(
+            '',
+            $this->callInaccessibleMethod(
+                tx_rnbase::makeInstance('Tx_Mkabtesting_Search_RenderedContentElements'),
+                'getJoins',
+                array()
+            )
+        );
+    }
 }

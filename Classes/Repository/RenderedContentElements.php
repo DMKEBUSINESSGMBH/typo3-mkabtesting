@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package TYPO3
- *  @subpackage tx_mkabtesting
- *  @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mkabtesting
+ * @author Hannes Bochmann <dev@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
@@ -35,33 +35,35 @@ tx_rnbase::load('tx_mklib_repository_Abstract');
  * @subpackage tx_mkabtesting
  */
 class Tx_Mkabtesting_Repository_RenderedContentElements
-	extends tx_mklib_repository_Abstract
+    extends tx_mklib_repository_Abstract
 {
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_repository_Abstract::getSearchClass()
-	 */
-	protected function getSearchClass() {
-		return 'Tx_Mkabtesting_Search_RenderedContentElements';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_repository_Abstract::getSearchClass()
+     */
+    protected function getSearchClass()
+    {
+        return 'Tx_Mkabtesting_Search_RenderedContentElements';
+    }
 
-	/**
-	 * @param int $elementUid
-	 * @param string $campaignIdentifier
-	 *
-	 * @return array
-	 */
-	public function countByElementUidAndCampaignIdentifier($elementUid, $campaignIdentifier) {
-		$fields = array(
-			'CONTENTELEMENT.content_element' => array(OP_EQ_INT => $elementUid),
-			'CONTENTELEMENT.campaign_identifier' => array(OP_EQ => $campaignIdentifier),
-		);
+    /**
+     * @param int $elementUid
+     * @param string $campaignIdentifier
+     *
+     * @return array
+     */
+    public function countByElementUidAndCampaignIdentifier($elementUid, $campaignIdentifier)
+    {
+        $fields = array(
+            'CONTENTELEMENT.content_element' => array(OP_EQ_INT => $elementUid),
+            'CONTENTELEMENT.campaign_identifier' => array(OP_EQ => $campaignIdentifier),
+        );
 
-		$options = array(
-			'count' => TRUE
-		);
+        $options = array(
+            'count' => true
+        );
 
-		return $this->search($fields, $options);
-	}
+        return $this->search($fields, $options);
+    }
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package TYPO3
- *  @subpackage tx_mkabtesting
- *  @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mkabtesting
+ * @author Hannes Bochmann <dev@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
@@ -35,230 +35,258 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  * @package TYPO3
  * @subpackage tx_mkabtesting
  */
-class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC {
+class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
+{
 
-	/**
-	 * @var string
-	 */
-	const COOKIE_NAME_PREFIX = 'AB-Testing-';
+    /**
+     * @var string
+     */
+    const COOKIE_NAME_PREFIX = 'AB-Testing-';
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_action_BaseIOC::getTemplateName()
-	 */
-	protected function getTemplateName() {
-		return 'showContentElements';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_action_BaseIOC::getTemplateName()
+     */
+    protected function getTemplateName()
+    {
+        return 'showContentElements';
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_action_BaseIOC::getViewClassName()
-	 */
-	protected function getViewClassName() {
-		return 'tx_rnbase_view_Base';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_action_BaseIOC::getViewClassName()
+     */
+    protected function getViewClassName()
+    {
+        return 'tx_rnbase_view_Base';
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_action_BaseIOC::handleRequest()
-	 */
-	protected function handleRequest(&$parameters, &$configurations, &$viewdata) {
-		foreach ($this->getElementsToBeRendered() as $contentUid) {
-			$typoscriptRenderingConfiguration = array(
-				'tables' => 'tt_content',
-				'source' => intval($contentUid),
-				'dontCheckPid' => 1
-			);
-			$content .= $this->getConfigurations()->getCObj()->RECORDS(
-				$typoscriptRenderingConfiguration
-			);
-		}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_action_BaseIOC::handleRequest()
+     */
+    protected function handleRequest(&$parameters, &$configurations, &$viewdata)
+    {
+        foreach ($this->getElementsToBeRendered() as $contentUid) {
+            $typoscriptRenderingConfiguration = array(
+                'tables' => 'tt_content',
+                'source' => intval($contentUid),
+                'dontCheckPid' => 1
+            );
+            $content .= $this->getConfigurations()->getCObj()->RECORDS(
+                $typoscriptRenderingConfiguration
+            );
+        }
 
-		return $content;
-	}
+        return $content;
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function getElementsToBeRendered() {
-		$elementUidsToBeRendered = $this->getElementsToBeRenderedFromCookie();
+    /**
+     * @return array
+     */
+    protected function getElementsToBeRendered()
+    {
+        $elementUidsToBeRendered = $this->getElementsToBeRenderedFromCookie();
 
-		if (empty($elementUidsToBeRendered)) {
-			$this->assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable();
+        if (empty($elementUidsToBeRendered)) {
+            $this->assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable();
 
-			foreach ($this->getElementsToBeRenderedFromDatabase() as $element) {
-				$elementUidsToBeRendered[] = $element->getContentElement();
-				$this->incrementCountForRenderedContentElement($element);
-			}
+            foreach ($this->getElementsToBeRenderedFromDatabase() as $element) {
+                $elementUidsToBeRendered[] = $element->getContentElement();
+                $this->incrementCountForRenderedContentElement($element);
+            }
 
-			$this->setElementsToBeRenderedToCookie($elementUidsToBeRendered);
-		}
+            $this->setElementsToBeRenderedToCookie($elementUidsToBeRendered);
+        }
 
-		return $elementUidsToBeRendered;
-	}
+        return $elementUidsToBeRendered;
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function getElementsToBeRenderedFromCookie() {
-		$elementsFromCookie = array();
+    /**
+     * @return array
+     */
+    protected function getElementsToBeRenderedFromCookie()
+    {
+        $elementsFromCookie = array();
 
-		if (
-			!empty($_COOKIE[$this->getCookieName()]) &&
-			$this->elementsInCookieStillValid()
-		) {
-			$elementsFromCookie = $this->getCookieValuesAsArray();
-		}
+        if (!empty($_COOKIE[$this->getCookieName()]) &&
+            $this->elementsInCookieStillValid()
+        ) {
+            $elementsFromCookie = $this->getCookieValuesAsArray();
+        }
 
-		return $elementsFromCookie;
-	}
+        return $elementsFromCookie;
+    }
 
-	/**
-	 * @return string
-	 */
-	private function getCookieName() {
-		return self::COOKIE_NAME_PREFIX . $this->getCurrentCampaignIdentifier();
-	}
+    /**
+     * @return string
+     */
+    private function getCookieName()
+    {
+        return self::COOKIE_NAME_PREFIX . $this->getCurrentCampaignIdentifier();
+    }
 
-	/**
-	 * @return boolean
-	 */
-	private function elementsInCookieStillValid() {
-		$invalidElements = array_diff(
-			$this->getCookieValuesAsArray(), $this->getAllConfiguredContentElements()
-		);
-		return empty($invalidElements);
-	}
+    /**
+     * @return bool
+     */
+    private function elementsInCookieStillValid()
+    {
+        $invalidElements = array_diff(
+            $this->getCookieValuesAsArray(),
+            $this->getAllConfiguredContentElements()
+        );
 
-	/**
-	 * @return Ambigous <multitype:, string, multitype:unknown >
-	 */
-	private function getCookieValuesAsArray() {
-		return tx_rnbase_util_Strings::trimExplode(
-			',', $_COOKIE[$this->getCookieName()]
-		);
-	}
+        return empty($invalidElements);
+    }
 
-	/**
-	 * es werden die elemente gerendert, die bisher am wenigstens gerendert wurden.
-	 * Dadurch erreichen wir die Gleichverteilung. Wir müssen dadurch aber auch
-	 * sicherstellen das alle möglichen Elemente in der Datenbank sind
-	 *
-	 * @return void
-	 */
-	protected function assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable() {
-		$repository = $this->getRenderedContentElementsRepository();
-		$currentCampaignIdentifier = $this->getCurrentCampaignIdentifier();
+    /**
+     * @return Ambigous <multitype:, string, multitype:unknown >
+     */
+    private function getCookieValuesAsArray()
+    {
+        return tx_rnbase_util_Strings::trimExplode(
+            ',',
+            $_COOKIE[$this->getCookieName()]
+        );
+    }
 
-		foreach ($this->getAllConfiguredContentElements() as $elementUid) {
-			if (!$repository->countByElementUidAndCampaignIdentifier(
-				$elementUid, $currentCampaignIdentifier
-			)) {
-				$repository->create(array(
-					'campaign_identifier' => $currentCampaignIdentifier,
-					'content_element' => $elementUid
-				));
-			}
-		}
-	}
+    /**
+     * es werden die elemente gerendert, die bisher am wenigstens gerendert wurden.
+     * Dadurch erreichen wir die Gleichverteilung. Wir müssen dadurch aber auch
+     * sicherstellen das alle möglichen Elemente in der Datenbank sind
+     *
+     * @return void
+     */
+    protected function assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable()
+    {
+        $repository = $this->getRenderedContentElementsRepository();
+        $currentCampaignIdentifier = $this->getCurrentCampaignIdentifier();
 
-	/**
-	 * @return array
-	 */
-	protected function getAllConfiguredContentElements() {
-		return tx_rnbase_util_Strings::trimExplode(
-				',',
-				$this->getConfigurations()->get($this->getConfId() . 'elements'),
-				TRUE
-		);
-	}
+        foreach ($this->getAllConfiguredContentElements() as $elementUid) {
+            if (!$repository->countByElementUidAndCampaignIdentifier(
+                $elementUid,
+                $currentCampaignIdentifier
+            )) {
+                $repository->create(array(
+                    'campaign_identifier' => $currentCampaignIdentifier,
+                    'content_element' => $elementUid
+                ));
+            }
+        }
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getCurrentCampaignIdentifier() {
-		return $this->getConfigurations()->get(
-				$this->getConfId() . 'campaignIdentifier'
-		);
-	}
+    /**
+     * @return array
+     */
+    protected function getAllConfiguredContentElements()
+    {
+        return tx_rnbase_util_Strings::trimExplode(
+            ',',
+            $this->getConfigurations()->get($this->getConfId() . 'elements'),
+            true
+        );
+    }
 
-	/**
-	 * @return Tx_Mkabtesting_Repository_RenderedContentElements
-	 */
-	protected function getRenderedContentElementsRepository() {
-		static $renderedContentElementsRepository;
+    /**
+     * @return string
+     */
+    protected function getCurrentCampaignIdentifier()
+    {
+        return $this->getConfigurations()->get(
+            $this->getConfId() . 'campaignIdentifier'
+        );
+    }
 
-		if (!is_object($renderedContentElementsRepository)) {
-			$renderedContentElementsRepository = tx_rnbase::makeInstance(
-					'Tx_Mkabtesting_Repository_RenderedContentElements'
-			);
-		}
+    /**
+     * @return Tx_Mkabtesting_Repository_RenderedContentElements
+     */
+    protected function getRenderedContentElementsRepository()
+    {
+        static $renderedContentElementsRepository;
 
-		return $renderedContentElementsRepository;
-	}
+        if (!is_object($renderedContentElementsRepository)) {
+            $renderedContentElementsRepository = tx_rnbase::makeInstance(
+                'Tx_Mkabtesting_Repository_RenderedContentElements'
+            );
+        }
 
-	/**
-	 * wir machen das hier weil wir einer methode im repository sonst
-	 * zu viele parameter übergeben müssten.
-	 *
-	 * @return Ambigous <multitype:tx_rnbase_model_base , array, multitype:>
-	 */
-	private function getElementsToBeRenderedFromDatabase() {
-		$repository = $this->getRenderedContentElementsRepository();
+        return $renderedContentElementsRepository;
+    }
 
-		$fields = array(
-			'CONTENTELEMENT.content_element' => array(
-				OP_IN_INT => $this->getConfigurations()->get($this->getConfId() . 'elements')
-			),
-			'CONTENTELEMENT.campaign_identifier' => array(
-				OP_EQ => $this->getCurrentCampaignIdentifier()
-			),
-		);
-		$options = array(
-			'orderby' => array('CONTENTELEMENT.render_count' => 'ASC'),
-			'limit' => $this->getConfigurations()->getInt(
-				$this->getConfId() . 'numberOfElementsToDisplay'
-			)
-		);
-		return $repository->search($fields, $options);
-	}
+    /**
+     * wir machen das hier weil wir einer methode im repository sonst
+     * zu viele parameter übergeben müssten.
+     *
+     * @return Ambigous <multitype:tx_rnbase_model_base , array, multitype:>
+     */
+    private function getElementsToBeRenderedFromDatabase()
+    {
+        $repository = $this->getRenderedContentElementsRepository();
 
-	/**
-	 * @param Tx_Mkabtesting_Model_RenderedContentElement $element
-	 *
-	 * @return void
-	 */
-	protected function incrementCountForRenderedContentElement(
-		Tx_Mkabtesting_Model_RenderedContentElement $element
-	) {
-		$this->getRenderedContentElementsRepository()->handleUpdate(
-			$element, array('render_count' => 'render_count+1'),
-			'', 0, 'render_count'
-		);
-	}
+        $fields = array(
+            'CONTENTELEMENT.content_element' => array(
+                OP_IN_INT => $this->getConfigurations()->get($this->getConfId() . 'elements')
+            ),
+            'CONTENTELEMENT.campaign_identifier' => array(
+                OP_EQ => $this->getCurrentCampaignIdentifier()
+            ),
+        );
+        $options = array(
+            'orderby' => array('CONTENTELEMENT.render_count' => 'ASC'),
+            'limit' => $this->getConfigurations()->getInt(
+                $this->getConfId() . 'numberOfElementsToDisplay'
+            )
+        );
 
-	/**
-	 *
-	 * @param array $elementUidsToBeRendered
-	 * @return void
-	 */
-	protected function setElementsToBeRenderedToCookie(array $elementUidsToBeRendered) {
-		$expireTime = $GLOBALS['EXEC_TIME'] + $this->getConfigurations()->getInt(
-			$this->getConfId() . 'cookieExpireTime'
-		);
-		$this->setCookie(join(',', $elementUidsToBeRendered), $expireTime);
-	}
+        return $repository->search($fields, $options);
+    }
+
+    /**
+     * @param Tx_Mkabtesting_Model_RenderedContentElement $element
+     *
+     * @return void
+     */
+    protected function incrementCountForRenderedContentElement(
+        Tx_Mkabtesting_Model_RenderedContentElement $element
+    ) {
+        $this->getRenderedContentElementsRepository()->handleUpdate(
+            $element,
+            array('render_count' => 'render_count+1'),
+            '',
+            0,
+            'render_count'
+        );
+    }
+
+    /**
+     *
+     * @param array $elementUidsToBeRendered
+     * @return void
+     */
+    protected function setElementsToBeRenderedToCookie(array $elementUidsToBeRendered)
+    {
+        $expireTime = $GLOBALS['EXEC_TIME'] + $this->getConfigurations()->getInt(
+            $this->getConfId() . 'cookieExpireTime'
+        );
+        $this->setCookie(join(',', $elementUidsToBeRendered), $expireTime);
+    }
 
 
-	/**
-	 * @param string $value
-	 * @param int $expire
-	 * @return void
-	 */
-	protected function setCookie($value, $expire) {
-		setcookie(
-			$this->getCookieName(), $value, $expire, '/',
-			tx_rnbase_util_Misc::getIndpEnv('HTTP_HOST'), FALSE, TRUE
-		);
-	}
+    /**
+     * @param string $value
+     * @param int $expire
+     * @return void
+     */
+    protected function setCookie($value, $expire)
+    {
+        setcookie(
+            $this->getCookieName(),
+            $value,
+            $expire,
+            '/',
+            tx_rnbase_util_Misc::getIndpEnv('HTTP_HOST'),
+            false,
+            true
+        );
+    }
 }

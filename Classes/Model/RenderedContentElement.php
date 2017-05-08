@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package TYPO3
- *  @subpackage tx_mkabtesting
- *  @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mkabtesting
+ * @author Hannes Bochmann <dev@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
@@ -35,14 +35,15 @@ tx_rnbase::load('tx_rnbase_model_base');
  * @subpackage tx_mkabtesting
  */
 class Tx_Mkabtesting_Model_RenderedContentElement
-	extends tx_rnbase_model_base
+    extends tx_rnbase_model_base
 {
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_model_base::getTableName()
-	 */
-	public function getTableName() {
-		return 'tx_mkabtesting_rendered_content_elements';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_model_base::getTableName()
+     */
+    public function getTableName()
+    {
+        return 'tx_mkabtesting_rendered_content_elements';
+    }
 }
