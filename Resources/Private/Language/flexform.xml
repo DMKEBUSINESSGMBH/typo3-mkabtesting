@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'tx_mkabtesting'</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="plugin.mkabtesting.flexform.tab.common">Common</label>
-			<label index="plugin.mkabtesting.flexform.action">Action</label>
-			<label index="plugin.mkabtesting.flexform.tab.TSSetup">TS-Setup</label>
-			<label index="plugin.mkabtesting.flexform.tssetup">plugin.tx_mkabtesting.</label>
-			<label index="plugin.mkabtesting.flexform.template">Template</label>
-			
-			<label index="plugin.mkabtesting.label">A/B Testing</label>
-			<label index="plugin.mkabtesting.description">Inhaltselemente mittels A/B Testing gleichverteilt ausgeben</label>
-			<label index="plugin.mkabtesting.flexform.action.ShowContentElements">Inhaltselemente anzeigen</label>
-			
-			<label index="plugin.mkabtesting.showContentElements.numberOfElementsToDisplay">Anzahl der anzuzeigenden Elemente</label>
-			<label index="plugin.mkabtesting.showContentElements.elements">Inhaltselemente</label>
-			<label index="plugin.mkabtesting.showContentElements.campaignIdentifier">Kampagnenbezeichner</label>
-			<label index="plugin.mkabtesting.showContentElements.cookieExpireTime">Zeit bis anzuzeigende Elemente für den Nutzer neu ermittelt werden (in Sekunden)</label>
-		</languageKey>
-	</data>
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for database tables/fields belonging to extension 'tx_mkabtesting'</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="plugin.mkabtesting.flexform.tab.common">Common</label>
+            <label index="plugin.mkabtesting.flexform.action">Action</label>
+            <label index="plugin.mkabtesting.flexform.tab.TSSetup">TS-Setup</label>
+            <label index="plugin.mkabtesting.flexform.tssetup">plugin.tx_mkabtesting.</label>
+            <label index="plugin.mkabtesting.flexform.template">Template</label>
+
+            <label index="plugin.mkabtesting.label">A/B Testing</label>
+            <label index="plugin.mkabtesting.description">Inhaltselemente mittels A/B Testing gleichverteilt ausgeben</label>
+            <label index="plugin.mkabtesting.flexform.action.ShowContentElements">Inhaltselemente anzeigen</label>
+
+            <label index="plugin.mkabtesting.showContentElements.numberOfElementsToDisplay">Anzahl der anzuzeigenden Elemente</label>
+            <label index="plugin.mkabtesting.showContentElements.elements">Inhaltselemente</label>
+            <label index="plugin.mkabtesting.showContentElements.campaignIdentifier">Kampagnenbezeichner</label>
+            <label index="plugin.mkabtesting.showContentElements.cookieExpireTime">Zeit bis anzuzeigende Elemente für den Nutzer neu ermittelt werden (in Sekunden)</label>
+        </languageKey>
+    </data>
 </T3locallang>

@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<type>database</type>
-		<description>Language labels for actions belonging to extension 'tx_mkabtesting'</description>
+		<description>Language labels for actions belonging to extension'tx_mkabtesting'</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">

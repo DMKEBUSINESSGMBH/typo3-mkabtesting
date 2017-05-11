@@ -6,34 +6,34 @@ tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
 
 $_EXTKEY = 'mkabtesting';
 
-$TCA['tx_mkabtesting_rendered_content_elements'] = array (
+$TCA['tx_mkabtesting_rendered_content_elements'] = array(
     'ctrl'  => $TCA['tx_mkabtesting_rendered_content_elements']['ctrl'],
-    'interface' => array (
+    'interface' => array(
         'showRecordFieldList'   => 'hidden,campaign_identifier,content_element,render_count'
     ),
     'feInterface'   => $TCA['tx_mkabtesting_rendered_content_elements']['feInterface'],
-    'columns'   => array (
-        'hidden'        => array (
+    'columns'   => array(
+        'hidden'        => array(
             'exclude'   => 1,
             'label'     => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config'    => array (
+            'config'    => array(
                 'type'      => 'check',
                 'default'   => '0'
             )
         ),
-        'campaign_identifier' => array (
+        'campaign_identifier' => array(
             'exclude'   => 1,
             'label'     => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.campaign_identifier',
-            'config'    => array (
+            'config'    => array(
                 'type'      => 'input',
                 'eval'      => 'required,trim',
                 'maxsize'   => 255
             )
         ),
-        'render_count' => array (
+        'render_count' => array(
             'exclude'   => 1,
             'label'     => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.render_count',
-            'config'    => array (
+            'config'    => array(
                 'type'  => 'input',
                 'eval'  => 'int',
                 'default' => 0,
@@ -42,7 +42,7 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array (
         'content_element' => array(
             'label'     => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.content_element',
             'exclude' => 1,
-            'config' => array (
+            'config' => array(
                 'type' => 'group',
                 'internal_type' => 'db',
                 'allowed' => 'tt_content',
@@ -54,10 +54,10 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array (
             ),
         ),
     ),
-    'types' => array (
+    'types' => array(
         '0' => array('showitem' => 'hidden;;1;;1-1-1,campaign_identifier,content_element,render_count')
     ),
-    'palettes' => array (
+    'palettes' => array(
         '1' => array('showitem' => '')
     )
 );
