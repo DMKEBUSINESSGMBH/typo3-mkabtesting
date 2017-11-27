@@ -29,7 +29,7 @@
         "typo3-ter/mkabtesting": "self.version"
     },
     "require": {
-        "typo3/cms": "~4.5 || ~6.2 || ~7.6 || ~8.7",
+        "typo3/cms": "~6.2 || ~7.6 || ~8.7",
         "digedag/rn-base": ">=1.4",
         "dmk/mklib": ">=3"
     },

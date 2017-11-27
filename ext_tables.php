@@ -9,9 +9,6 @@ if (!defined('TYPO3_MODE')) {
 
 $_EXTKEY = 'mkabtesting';
 
-// TCA
-require(tx_rnbase_util_Extensions::extPath($_EXTKEY).'Configuration/TCA/ext_tables.php');
-
 // Plugin anmelden
 // Einige Felder ausblenden
 $TCA['tt_content']['types']['list']['subtypes_excludelist']['tx_mkabtesting'] =

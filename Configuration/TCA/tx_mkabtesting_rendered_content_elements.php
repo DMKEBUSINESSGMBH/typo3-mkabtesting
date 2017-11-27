@@ -4,14 +4,27 @@ if (!defined('TYPO3_MODE')) {
 }
 tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
 
-$_EXTKEY = 'mkabtesting';
-
-$TCA['tx_mkabtesting_rendered_content_elements'] = array(
-    'ctrl'  => $TCA['tx_mkabtesting_rendered_content_elements']['ctrl'],
+return array(
+    'ctrl' => array(
+        'title'             => 'LLL:EXT:mkabtesting/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements',
+        'label'             => 'campaign_identifier',
+        'label_alt'         => 'content_element,render_count',
+        'label_alt_force'   => true,
+        'tstamp'            => 'tstamp',
+        'crdate'            => 'crdate',
+        'cruser_id'         => 'cruser_id',
+        'default_sortby'    => 'ORDER BY campaign_identifier DESC',
+        'delete'            => 'deleted',
+        'enablecolumns'     => array(
+            'disabled' => 'hidden',
+        ),
+        'iconfile'          => 'EXT:mkabtesting/Resources/Public/Img/Icons/tca_table.gif',
+        'dividers2tabs'     => true,
+        'searchFields'      => 'campaign_identifier,elements'
+    ),
     'interface' => array(
         'showRecordFieldList'   => 'hidden,campaign_identifier,content_element,render_count'
     ),
-    'feInterface'   => $TCA['tx_mkabtesting_rendered_content_elements']['feInterface'],
     'columns'   => array(
         'hidden'        => array(
             'exclude'   => 1,
@@ -23,7 +36,7 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array(
         ),
         'campaign_identifier' => array(
             'exclude'   => 1,
-            'label'     => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.campaign_identifier',
+            'label'     => 'LLL:EXT:mkabtesting/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.campaign_identifier',
             'config'    => array(
                 'type'      => 'input',
                 'eval'      => 'required,trim',
@@ -32,7 +45,7 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array(
         ),
         'render_count' => array(
             'exclude'   => 1,
-            'label'     => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.render_count',
+            'label'     => 'LLL:EXT:mkabtesting/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.render_count',
             'config'    => array(
                 'type'  => 'input',
                 'eval'  => 'int',
@@ -40,7 +53,7 @@ $TCA['tx_mkabtesting_rendered_content_elements'] = array(
             )
         ),
         'content_element' => array(
-            'label'     => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.content_element',
+            'label'     => 'LLL:EXT:mkabtesting/Resources/Private/Language/tca.xml:tx_mkabtesting_rendered_content_elements.content_element',
             'exclude' => 1,
             'config' => array(
                 'type' => 'group',
