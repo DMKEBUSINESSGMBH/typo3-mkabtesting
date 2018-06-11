@@ -470,24 +470,30 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     {
         $contentObject = $this->getMock(
             tx_rnbase_util_Typo3Classes::getContentObjectRendererClass(),
-            array('RECORDS')
+            array('cObjGetSingle')
         );
 
         $contentObject->expects($this->at(0))
-            ->method('RECORDS')
-            ->with(array(
-                'tables' => 'tt_content',
-                'source' => 123,
-                'dontCheckPid' => 1
-            ))
+            ->method('cObjGetSingle')
+            ->with(
+                'RECORDS',
+                array(
+                    'tables' => 'tt_content',
+                    'source' => 123,
+                    'dontCheckPid' => 1
+                )
+            )
             ->will(($this->returnValue('erstes element ')));
         $contentObject->expects($this->at(1))
-            ->method('RECORDS')
-            ->with(array(
-                'tables' => 'tt_content',
-                'source' => 456,
-                'dontCheckPid' => 1
-            ))
+            ->method('cObjGetSingle')
+            ->with(
+                'RECORDS',
+                array(
+                    'tables' => 'tt_content',
+                    'source' => 456,
+                    'dontCheckPid' => 1
+                )
+            )
             ->will(($this->returnValue('zweites element')));
 
         $action = $this->getMock(

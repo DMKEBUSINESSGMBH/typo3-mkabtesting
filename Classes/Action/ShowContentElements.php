@@ -73,7 +73,8 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
                 'source' => intval($contentUid),
                 'dontCheckPid' => 1
             );
-            $content .= $this->getConfigurations()->getCObj()->RECORDS(
+            $content .= $this->getConfigurations()->getCObj()->cObjGetSingle(
+                'RECORDS',
                 $typoscriptRenderingConfiguration
             );
         }
