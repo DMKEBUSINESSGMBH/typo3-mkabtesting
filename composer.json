@@ -25,7 +25,6 @@
         "issues": "https://github.com/DMKEBUSINESSGMBH/typo3-mkabtesting"
     },
     "replace": {
-        "mkabtesting": "self.version",
         "typo3-ter/mkabtesting": "self.version"
     },
     "require": {
@@ -37,5 +36,10 @@
         "classmap": [
             "Classes/"
         ]
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "mkabtesting",
+      }
     }
 }
