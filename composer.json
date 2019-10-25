@@ -39,7 +39,7 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "mkabtesting",
+            "extension-key": "mkabtesting"
       }
     }
 }
