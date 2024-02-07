@@ -161,6 +161,9 @@ class ShowContentElementsTest extends BaseTestCase
      */
     public function testAssureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable()
     {
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->id = 123;
+
         $repository = $this->getMock(
             RenderedContentElements::class,
             ['countByElementUidAndCampaignIdentifier', 'create']
@@ -172,6 +175,7 @@ class ShowContentElementsTest extends BaseTestCase
         $expectedCreationData = [
             'campaign_identifier' => 'testCampaign',
             'content_element' => 2,
+            'pid' => 123,
         ];
         $repository->expects($this->once())
             ->method('create')
