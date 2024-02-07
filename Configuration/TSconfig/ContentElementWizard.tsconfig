@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.plugins {
+    elements {
+        mkabtesting {
+            iconIdentifier = ext-mkabtesting-wizard-icon
+            title = LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.label
+            description = LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.description
+            tt_content_defValues {
+                CType = list
+                list_type = tx_mkabtesting
+            }
+        }
+    }
+}

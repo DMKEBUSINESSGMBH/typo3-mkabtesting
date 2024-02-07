@@ -1,81 +1,78 @@
 <?php
-/**
- * @package TYPO3
- * @subpackage tx_mkabtesting
- * @author Hannes Bochmann <dev@dmk-ebusiness.de>
+
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) 2011-2024 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2013 Hannes Bochmann <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklog" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Misc');
+
+namespace DMK\Mkabtesting\Action;
+
+use DMK\Mkabtesting\Domain\Model\RenderedContentElement;
+use DMK\Mkabtesting\Domain\Repository\RenderedContentElements;
+use Sys25\RnBase\Frontend\Controller\AbstractAction;
+use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Frontend\View\Marker\BaseView;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Tx_Mkabtesting_Action_ShowContentElements
+ * Class ShowContentElements.
  *
- * @package TYPO3
- * @subpackage tx_mkabtesting
+ * @author  Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
+class ShowContentElements extends AbstractAction
 {
+    protected RequestInterface $request;
 
     /**
      * @var string
      */
-    const COOKIE_NAME_PREFIX = 'AB-Testing-';
+    public const COOKIE_NAME_PREFIX = 'AB-Testing-';
 
-    /**
-     * (non-PHPdoc)
-     * @see tx_rnbase_action_BaseIOC::getTemplateName()
-     */
     protected function getTemplateName()
     {
         return 'showContentElements';
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see tx_rnbase_action_BaseIOC::getViewClassName()
-     */
     protected function getViewClassName()
     {
-        return 'tx_rnbase_view_Base';
+        return BaseView::class;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see tx_rnbase_action_BaseIOC::handleRequest()
-     */
-    protected function handleRequest(&$parameters, &$configurations, &$viewdata)
+    protected function handleRequest(RequestInterface $request)
     {
+        $this->request = $request;
+        $content = '';
         foreach ($this->getElementsToBeRendered() as $contentUid) {
-            $typoscriptRenderingConfiguration = array(
+            $renderingConfiguration = [
                 'tables' => 'tt_content',
                 'source' => intval($contentUid),
-                'dontCheckPid' => 1
-            );
-            $content .= $this->getConfigurations()->getCObj()->cObjGetSingle(
+                'dontCheckPid' => 1,
+            ];
+            $content .= $this->request->getConfigurations()->getCObj()->cObjGetSingle(
                 'RECORDS',
-                $typoscriptRenderingConfiguration
+                $renderingConfiguration
             );
         }
 
@@ -104,14 +101,14 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
     }
 
     /**
-     * @return array
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected function getElementsToBeRenderedFromCookie()
+    protected function getElementsToBeRenderedFromCookie(): array
     {
-        $elementsFromCookie = array();
+        $elementsFromCookie = [];
 
-        if (!empty($_COOKIE[$this->getCookieName()]) &&
-            $this->elementsInCookieStillValid()
+        if (!empty($_COOKIE[$this->getCookieName()])
+            && $this->elementsInCookieStillValid()
         ) {
             $elementsFromCookie = $this->getCookieValuesAsArray();
         }
@@ -120,17 +117,14 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
     }
 
     /**
-     * @return string
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
-    private function getCookieName()
+    private function getCookieName(): string
     {
-        return self::COOKIE_NAME_PREFIX . $this->getCurrentCampaignIdentifier();
+        return self::COOKIE_NAME_PREFIX.$this->getCurrentCampaignIdentifier();
     }
 
-    /**
-     * @return bool
-     */
-    private function elementsInCookieStillValid()
+    private function elementsInCookieStillValid(): bool
     {
         $invalidElements = array_diff(
             $this->getCookieValuesAsArray(),
@@ -142,10 +136,12 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
 
     /**
      * @return Ambigous <multitype:, string, multitype:unknown >
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function getCookieValuesAsArray()
     {
-        return tx_rnbase_util_Strings::trimExplode(
+        return GeneralUtility::trimExplode(
             ',',
             $_COOKIE[$this->getCookieName()]
         );
@@ -154,7 +150,7 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
     /**
      * es werden die elemente gerendert, die bisher am wenigstens gerendert wurden.
      * Dadurch erreichen wir die Gleichverteilung. Wir müssen dadurch aber auch
-     * sicherstellen das alle möglichen Elemente in der Datenbank sind
+     * sicherstellen das alle möglichen Elemente in der Datenbank sind.
      *
      * @return void
      */
@@ -168,10 +164,10 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
                 $elementUid,
                 $currentCampaignIdentifier
             )) {
-                $repository->create(array(
+                $repository->create([
                     'campaign_identifier' => $currentCampaignIdentifier,
-                    'content_element' => $elementUid
-                ));
+                    'content_element' => $elementUid,
+                ]);
             }
         }
     }
@@ -181,9 +177,9 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
      */
     protected function getAllConfiguredContentElements()
     {
-        return tx_rnbase_util_Strings::trimExplode(
+        return GeneralUtility::trimExplode(
             ',',
-            $this->getConfigurations()->get($this->getConfId() . 'elements'),
+            $this->request->getConfigurations()->get($this->request->getConfId().'elements'),
             true
         );
     }
@@ -193,66 +189,47 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
      */
     protected function getCurrentCampaignIdentifier()
     {
-        return $this->getConfigurations()->get(
-            $this->getConfId() . 'campaignIdentifier'
+        return $this->request->getConfigurations()->get(
+            $this->request->getConfId().'campaignIdentifier'
         );
     }
 
-    /**
-     * @return Tx_Mkabtesting_Repository_RenderedContentElements
-     */
-    protected function getRenderedContentElementsRepository()
+    protected function getRenderedContentElementsRepository(): RenderedContentElements
     {
-        static $renderedContentElementsRepository;
-
-        if (!is_object($renderedContentElementsRepository)) {
-            $renderedContentElementsRepository = tx_rnbase::makeInstance(
-                'Tx_Mkabtesting_Repository_RenderedContentElements'
-            );
-        }
-
-        return $renderedContentElementsRepository;
+        return GeneralUtility::makeInstance(RenderedContentElements::class);
     }
 
     /**
      * wir machen das hier weil wir einer methode im repository sonst
      * zu viele parameter übergeben müssten.
-     *
-     * @return Ambigous <multitype:tx_rnbase_model_base , array, multitype:>
      */
     private function getElementsToBeRenderedFromDatabase()
     {
         $repository = $this->getRenderedContentElementsRepository();
 
-        $fields = array(
-            'CONTENTELEMENT.content_element' => array(
-                OP_IN_INT => $this->getConfigurations()->get($this->getConfId() . 'elements')
+        $fields = [
+            'CONTENTELEMENT.content_element' => [
+                OP_IN_INT => $this->request->getConfigurations()->get($this->request->getConfId().'elements'),
+            ],
+            'CONTENTELEMENT.campaign_identifier' => [
+                OP_EQ => $this->getCurrentCampaignIdentifier(),
+            ],
+        ];
+        $options = [
+            'orderby' => ['CONTENTELEMENT.render_count' => 'ASC'],
+            'limit' => $this->request->getConfigurations()->getInt(
+                $this->request->getConfId().'numberOfElementsToDisplay'
             ),
-            'CONTENTELEMENT.campaign_identifier' => array(
-                OP_EQ => $this->getCurrentCampaignIdentifier()
-            ),
-        );
-        $options = array(
-            'orderby' => array('CONTENTELEMENT.render_count' => 'ASC'),
-            'limit' => $this->getConfigurations()->getInt(
-                $this->getConfId() . 'numberOfElementsToDisplay'
-            )
-        );
+        ];
 
         return $repository->search($fields, $options);
     }
 
-    /**
-     * @param Tx_Mkabtesting_Model_RenderedContentElement $element
-     *
-     * @return void
-     */
-    protected function incrementCountForRenderedContentElement(
-        Tx_Mkabtesting_Model_RenderedContentElement $element
-    ) {
+    protected function incrementCountForRenderedContentElement(RenderedContentElement $element): void
+    {
         $this->getRenderedContentElementsRepository()->handleUpdate(
             $element,
-            array('render_count' => 'render_count+1'),
+            ['render_count' => 'render_count+1'],
             '',
             0,
             'render_count'
@@ -260,22 +237,22 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
     }
 
     /**
-     *
-     * @param array $elementUidsToBeRendered
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     protected function setElementsToBeRenderedToCookie(array $elementUidsToBeRendered)
     {
-        $expireTime = $GLOBALS['EXEC_TIME'] + $this->getConfigurations()->getInt(
-            $this->getConfId() . 'cookieExpireTime'
+        $expireTime = $GLOBALS['EXEC_TIME'] + $this->request->getConfigurations()->getInt(
+            $this->request->getConfId().'cookieExpireTime'
         );
         $this->setCookie(join(',', $elementUidsToBeRendered), $expireTime);
     }
 
-
     /**
      * @param string $value
-     * @param int $expire
+     * @param int    $expire
+     *
      * @return void
      */
     protected function setCookie($value, $expire)
@@ -285,7 +262,7 @@ class Tx_Mkabtesting_Action_ShowContentElements extends tx_rnbase_action_BaseIOC
             $value,
             $expire,
             '/',
-            tx_rnbase_util_Misc::getIndpEnv('HTTP_HOST'),
+            GeneralUtility::getIndpEnv('HTTP_HOST'),
             false,
             true
         );

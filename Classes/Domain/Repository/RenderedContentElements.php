@@ -25,10 +25,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace DMK\Mkabtesting\Search;
-
-use DMK\Mkabtesting\Domain\Model\RenderedContentElement;
-use Sys25\RnBase\Search\SearchBase;
+namespace DMK\Mkabtesting\Domain\Repository;
 
 /**
  * Class RenderedContentElements.
@@ -37,63 +34,35 @@ use Sys25\RnBase\Search\SearchBase;
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class RenderedContentElements extends SearchBase
+class RenderedContentElements extends \tx_mklib_repository_Abstract
 {
     /**
-     * getTableMappings().
-     */
-    protected function getTableMappings()
-    {
-        $tableMapping[$this->getBaseTableAlias()] = $this->getBaseTable();
-
-        return $tableMapping;
-    }
-
-    /**
-     * useAlias().
-     */
-    protected function useAlias()
-    {
-        return true;
-    }
-
-    /**
-     * getBaseTableAlias().
-     */
-    protected function getBaseTableAlias()
-    {
-        return 'CONTENTELEMENT';
-    }
-
-    /**
-     * getBaseTable().
-     */
-    protected function getBaseTable()
-    {
-        return 'tx_mkabtesting_rendered_content_elements';
-    }
-
-    /**
-     * getWrapperClass().
-     */
-    public function getWrapperClass()
-    {
-        return RenderedContentElement::class;
-    }
-
-    /**
-     * Liefert alle JOINS zurück.
+     * (non-PHPdoc).
      *
-     * @param array $tableAliases
-     *
-     * @return string
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @see tx_mklib_repository_Abstract::getSearchClass()
      */
-    protected function getJoins($tableAliases)
+    protected function getSearchClass()
     {
-        $join = '';
+        return \DMK\Mkabtesting\Search\RenderedContentElements::class;
+    }
 
-        return $join;
+    /**
+     * @param int    $elementUid
+     * @param string $campaignIdentifier
+     *
+     * @return array
+     */
+    public function countByElementUidAndCampaignIdentifier($elementUid, $campaignIdentifier)
+    {
+        $fields = [
+            'CONTENTELEMENT.content_element' => [OP_EQ_INT => $elementUid],
+            'CONTENTELEMENT.campaign_identifier' => [OP_EQ => $campaignIdentifier],
+        ];
+
+        $options = [
+            'count' => true,
+        ];
+
+        return $this->search($fields, $options);
     }
 }

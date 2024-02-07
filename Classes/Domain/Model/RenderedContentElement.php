@@ -25,15 +25,21 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-if (!defined('TYPO3')) {
-    exit('Access denied.');
-}
+namespace DMK\Mkabtesting\Domain\Model;
 
-TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Imaging\IconRegistry::class)->registerIcon(
-    'ext-mkabtesting-wizard-icon',
-    TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    ['source' => 'EXT:mkabtesting/Resources/Public/Icons/Extension.gif']
-);
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mkabtesting/Configuration/TSconfig/ContentElementWizard.tsconfig">'
-);
+use Sys25\RnBase\Domain\Model\BaseModel;
+
+/**
+ * Class RenderedContentElement.
+ *
+ * @author  Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
+ */
+class RenderedContentElement extends BaseModel
+{
+    public function getTableName()
+    {
+        return 'tx_mkabtesting_rendered_content_elements';
+    }
+}

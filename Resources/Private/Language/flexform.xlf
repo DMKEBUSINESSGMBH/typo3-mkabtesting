@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="messages" date="2022-06-17T09:33:24Z" product-name="mkabtesting">
+        <header/>
+        <body>
+            <trans-unit id="plugin.mkabtesting.flexform.tab.common" resname="error" >
+                <source>Common</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.flexform.action" resname="error" >
+                <source>Action</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.flexform.tab.TSSetup" resname="error" >
+                <source>TS-Setup</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.flexform.tssetup" resname="error" >
+                <source>plugin.tx_mkabtesting.</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.flexform.template" resname="error" >
+                <source>Template</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.label" resname="error" >
+                <source>A/B Testing</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.description" resname="error" >
+                <source>Inhaltselemente mittels A/B Testing gleichverteilt ausgeben</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.flexform.action.ShowContentElements" resname="error" >
+                <source>Inhaltselemente anzeigen</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.showContentElements.numberOfElementsToDisplay" resname="error" >
+                <source>Anzahl der anzuzeigenden Elemente</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.showContentElements.elements" resname="error" >
+                <source>Inhaltselemente</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.showContentElements.campaignIdentifier" resname="error" >
+                <source>Kampagnenbezeichner</source>
+            </trans-unit>
+            <trans-unit id="plugin.mkabtesting.showContentElements.cookieExpireTime" resname="error" >
+                <source>Zeit bis anzuzeigende Elemente für den Nutzer neu ermittelt werden (in Sekunden)</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

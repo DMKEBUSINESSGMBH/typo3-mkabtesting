@@ -8,7 +8,7 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.action
+                    <sheetTitle>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.flexform.action
                     </sheetTitle>
                 </TCEforms>
                 <type>array</type>
@@ -16,15 +16,15 @@
                     <action>
                         <TCEforms>
                             <exclude>1</exclude>
-                            <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.action
+                            <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.flexform.action
                             </label>
                             <config>
                                 <type>select</type>
                                 <renderType>selectMultipleSideBySide</renderType>
                                 <items type="array">
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.action.ShowContentElements</numIndex>
-                                        <numIndex index="1">Tx_Mkabtesting_Action_ShowContentElements</numIndex>
+                                        <numIndex index="0">LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.flexform.action.ShowContentElements</numIndex>
+                                        <numIndex index="1">DMK\Mkabtesting\Action\ShowContentElements</numIndex>
                                     </numIndex>
                                 </items>
                                 <multiple>0</multiple>
@@ -39,14 +39,14 @@
         <s_showContentElements>
             <ROOT>
             <TCEforms>
-                <sheetTitle>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.action.ShowContentElements</sheetTitle>
+                <sheetTitle>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.flexform.action.ShowContentElements</sheetTitle>
             </TCEforms>
             <type>array</type>
             <el>
                 <showContentElements.elements>
                     <TCEforms>
                         <exclude>1</exclude>
-                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.showContentElements.elements</label>
+                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.showContentElements.elements</label>
                         <config>
                             <type>group</type>
                             <internal_type>db</internal_type>
@@ -66,7 +66,7 @@
                 <showContentElements.numberOfElementsToDisplay>
                     <TCEforms>
                         <exclude>1</exclude>
-                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.showContentElements.numberOfElementsToDisplay</label>
+                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.showContentElements.numberOfElementsToDisplay</label>
                         <config>
                             <type>input</type>
                             <default>1</default>
@@ -81,7 +81,7 @@
                 <showContentElements.campaignIdentifier>
                     <TCEforms>
                         <exclude>1</exclude>
-                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.showContentElements.campaignIdentifier</label>
+                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.showContentElements.campaignIdentifier</label>
                         <config>
                             <type>input</type>
                             <eval>trim,required</eval>
@@ -92,7 +92,7 @@
                 <showContentElements.cookieExpireTime>
                     <TCEforms>
                         <exclude>1</exclude>
-                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.showContentElements.cookieExpireTime</label>
+                        <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.showContentElements.cookieExpireTime</label>
                         <config>
                             <type>input</type>
                             <default>2592000</default>
@@ -106,7 +106,7 @@
         <s_tssetup>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.tab.TSSetup
+                    <sheetTitle>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.flexform.tab.TSSetup
                     </sheetTitle>
                 </TCEforms>
                 <type>array</type>
@@ -114,7 +114,7 @@
                     <flexformTS>
                         <TCEforms>
                             <exclude>1</exclude>
-                            <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xml:plugin.mkabtesting.flexform.tssetup
+                            <label>LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.flexform.tssetup
                             </label>
                             <config>
                                 <type>text</type>

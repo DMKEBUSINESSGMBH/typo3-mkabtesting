@@ -25,9 +25,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace DMK\Mkabtesting\Search;
+namespace DMK\Mkabtesting\Domain\Repository;
 
-use DMK\Mkabtesting\Domain\Model\RenderedContentElement;
 use Sys25\RnBase\Testing\BaseTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -66,84 +65,41 @@ class RenderedContentElementsTest extends BaseTestCase
     /**
      * @group unit
      */
-    public function testGetTableMappings()
+    public function testGetSearchClass()
     {
         $this->assertEquals(
-            ['CONTENTELEMENT' => 'tx_mkabtesting_rendered_content_elements'],
+            \DMK\Mkabtesting\Search\RenderedContentElements::class,
             $this->callInaccessibleMethod(
                 GeneralUtility::makeInstance(RenderedContentElements::class),
-                'getTableMappings'
-            )
+                'getSearchClass'
+            ),
+            'falscher Klassenname'
         );
     }
 
     /**
      * @group unit
      */
-    public function testUseAlias()
+    public function testCountByElementUidAndCampaignIdentifier()
     {
-        $this->assertTrue(
-            $this->callInaccessibleMethod(
-                GeneralUtility::makeInstance(RenderedContentElements::class),
-                'useAlias'
-            )
+        $repository = $this->getMock(
+            RenderedContentElements::class,
+            ['search']
         );
-    }
 
-    /**
-     * @group unit
-     */
-    public function testGetBaseTableAlias()
-    {
-        $this->assertEquals(
-            'CONTENTELEMENT',
-            $this->callInaccessibleMethod(
-                GeneralUtility::makeInstance(RenderedContentElements::class),
-                'getBaseTableAlias'
-            )
-        );
-    }
+        $expectedFields = [
+            'CONTENTELEMENT.content_element' => [OP_EQ_INT => 123],
+            'CONTENTELEMENT.campaign_identifier' => [OP_EQ => 456],
+        ];
 
-    /**
-     * @group unit
-     */
-    public function testGetBaseTable()
-    {
-        $this->assertEquals(
-            'tx_mkabtesting_rendered_content_elements',
-            $this->callInaccessibleMethod(
-                GeneralUtility::makeInstance(RenderedContentElements::class),
-                'getBaseTable'
-            )
-        );
-    }
+        $expectedOptions = [
+            'count' => true,
+        ];
 
-    /**
-     * @group unit
-     */
-    public function testGetWrapperClass()
-    {
-        $this->assertEquals(
-            RenderedContentElement::class,
-            $this->callInaccessibleMethod(
-                GeneralUtility::makeInstance(RenderedContentElements::class),
-                'getWrapperClass'
-            )
-        );
-    }
+        $repository->expects($this->once())
+            ->method('search')
+            ->with($expectedFields, $expectedOptions);
 
-    /**
-     * @group unit
-     */
-    public function testGetJoins()
-    {
-        $this->assertEquals(
-            '',
-            $this->callInaccessibleMethod(
-                GeneralUtility::makeInstance(RenderedContentElements::class),
-                'getJoins',
-                []
-            )
-        );
+        $repository->countByElementUidAndCampaignIdentifier(123, 456);
     }
 }

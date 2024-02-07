@@ -1,13 +1,49 @@
 <?php
-/**
- * @package TYPO3
- * @subpackage tx_mkadvent
- * @author Hannes Bochmann <dev@dmk-ebusiness.de>
+
+/*
+ * Copyright notice
  *
+ * (c) 2011-2024 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklog" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
+namespace DMK\Mkabtesting\Action;
+
+use DMK\Mkabtesting\Domain\Model\RenderedContentElement;
+use DMK\Mkabtesting\Domain\Repository\RenderedContentElements;
+use Sys25\RnBase\Configuration\ConfigurationInterface;
+use Sys25\RnBase\Frontend\Request\Parameters;
+use Sys25\RnBase\Frontend\Request\Request;
+use Sys25\RnBase\Frontend\Request\RequestInterface;
+use Sys25\RnBase\Frontend\View\Marker\BaseView;
+use Sys25\RnBase\Testing\BaseTestCase;
+use Sys25\RnBase\Testing\TestUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
+/***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -24,27 +60,18 @@
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- */
-
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Mkabtesting_Action_ShowContentElements');
-tx_rnbase::load('Tx_Mkabtesting_Repository_RenderedContentElements');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+ ***************************************************************/
 
 /**
- * @package TYPO3
- * @subpackage tx_mkadvent
- * @author Hannes Bochmann <dev@dmk-ebusiness.de>
+ * Class ShowContentElementsTest.
+ *
+ * @author  Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mkabtesting_Action_ShowContentElementsTest
-    extends tx_rnbase_tests_BaseTestCase
+class ShowContentElementsTest extends BaseTestCase
 {
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_COOKIE['AB-Testing-testCampaign'])) {
             unset($_COOKIE['AB-Testing-testCampaign']);
@@ -59,7 +86,7 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
         $this->assertEquals(
             'showContentElements',
             $this->callInaccessibleMethod(
-                tx_rnbase::makeInstance('Tx_Mkabtesting_Action_ShowContentElements'),
+                GeneralUtility::makeInstance(ShowContentElements::class),
                 'getTemplateName'
             ),
             'falscher Templatename'
@@ -72,9 +99,9 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     public function testGetViewClassName()
     {
         $this->assertEquals(
-            'tx_rnbase_view_Base',
+            BaseView::class,
             $this->callInaccessibleMethod(
-                tx_rnbase::makeInstance('Tx_Mkabtesting_Action_ShowContentElements'),
+                GeneralUtility::makeInstance(ShowContentElements::class),
                 'getViewClassName'
             ),
             'falscher Klassenname'
@@ -87,9 +114,9 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     public function testGetRenderedContentElementsRepository()
     {
         $this->assertInstanceOf(
-            'Tx_Mkabtesting_Repository_RenderedContentElements',
+            RenderedContentElements::class,
             $this->callInaccessibleMethod(
-                tx_rnbase::makeInstance('Tx_Mkabtesting_Action_ShowContentElements'),
+                GeneralUtility::makeInstance(ShowContentElements::class),
                 'getRenderedContentElementsRepository'
             ),
             'falsche Klasse'
@@ -101,14 +128,17 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
      */
     public function testGetAllConfiguredContentElements()
     {
-        $action = tx_rnbase::makeInstance('Tx_Mkabtesting_Action_ShowContentElements');
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array('elements' => '1,2,3')),
-            'mkabtesting'
+        $action = $this->getAccessibleMock(ShowContentElements::class, ['getTemplateName']);
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => ['elements' => '1,2,3']],
+                'mkabtesting'
+            )
         );
-        $action->setConfigurations($configurations);
+
         $this->assertEquals(
-            array(1,2,3),
+            [1, 2, 3],
             $this->callInaccessibleMethod(
                 $action,
                 'getAllConfiguredContentElements'
@@ -117,46 +147,53 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
         );
     }
 
+    protected function setRequestToAction(ShowContentElements $action, ConfigurationInterface $configurations): RequestInterface
+    {
+        $parameters = new Parameters();
+        $request = new Request($parameters, $configurations, 'showContentElements.');
+        $action->_set('request', $request);
+
+        return $request;
+    }
+
     /**
      * @group unit
      */
     public function testAssureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable()
     {
         $repository = $this->getMock(
-            'Tx_Mkabtesting_Repository_RenderedContentElements',
-            array('countByElementUidAndCampaignIdentifier', 'create')
+            RenderedContentElements::class,
+            ['countByElementUidAndCampaignIdentifier', 'create']
         );
-        $repository->expects($this->at(0))
+        $repository->expects($this->exactly(2))
             ->method('countByElementUidAndCampaignIdentifier')
-            ->with(1, 'testCampaign')
-            ->will(($this->returnValue(1)));
-        $repository->expects($this->at(1))
-            ->method('countByElementUidAndCampaignIdentifier')
-            ->with(2, 'testCampaign')
-            ->will(($this->returnValue(null)));
-        $expectedCreationData = array(
+            ->withConsecutive([1, 'testCampaign'], [2, 'testCampaign'])
+            ->willReturnOnConsecutiveCalls(1, null);
+        $expectedCreationData = [
             'campaign_identifier' => 'testCampaign',
-            'content_element' => 2
-        );
-        $repository->expects($this->at(2))
+            'content_element' => 2,
+        ];
+        $repository->expects($this->once())
             ->method('create')
             ->with($expectedCreationData);
 
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array('getRenderedContentElementsRepository')
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            ['getRenderedContentElementsRepository']
         );
         $action->expects($this->once())
             ->method('getRenderedContentElementsRepository')
-            ->will(($this->returnValue($repository)));
+            ->will($this->returnValue($repository));
 
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'elements' => '1,2', 'campaignIdentifier' => 'testCampaign'
-            )),
-            'mkabtesting'
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'elements' => '1,2', 'campaignIdentifier' => 'testCampaign',
+                ]],
+                'mkabtesting'
+            )
         );
-        $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
             $action,
@@ -170,26 +207,26 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     public function testIncrementCountForRenderedContentElement()
     {
         $repository = $this->getMock(
-            'Tx_Mkabtesting_Repository_RenderedContentElements',
-            array('handleUpdate')
+            RenderedContentElements::class,
+            ['handleUpdate']
         );
-        $elementModel = tx_rnbase::makeInstance(
-            'Tx_Mkabtesting_Model_RenderedContentElement',
-            array('uid' => 1)
+        $elementModel = GeneralUtility::makeInstance(
+            RenderedContentElement::class,
+            ['uid' => 1]
         );
         $repository->expects($this->once())
             ->method('handleUpdate')
             ->with(
                 $elementModel,
-                array('render_count' => 'render_count+1'),
+                ['render_count' => 'render_count+1'],
                 '',
                 0,
                 'render_count'
             );
 
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array('getRenderedContentElementsRepository')
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            ['getRenderedContentElementsRepository']
         );
         $action->expects($this->once())
             ->method('getRenderedContentElementsRepository')
@@ -207,15 +244,20 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
      */
     public function testGetCookieName()
     {
-        $action = tx_rnbase::makeInstance('Tx_Mkabtesting_Action_ShowContentElements');
-
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'campaignIdentifier' => 'testCampaign',
-            )),
-            'mkabtesting'
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            ['setCookie']
         );
-        $action->setConfigurations($configurations);
+
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'campaignIdentifier' => 'testCampaign',
+                ]],
+                'mkabtesting'
+            )
+        );
 
         $this->assertEquals(
             'AB-Testing-testCampaign',
@@ -228,26 +270,28 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
      */
     public function testSetElementsToBeRenderedToCookie()
     {
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array('setCookie')
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            ['setCookie']
         );
         $action->expects($this->once())
             ->method('setCookie')
             ->with('123,456', $GLOBALS['EXEC_TIME'] + 123456);
 
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'cookieExpireTime' => 123456, 'campaignIdentifier' => 'testCampaign',
-            )),
-            'mkabtesting'
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'cookieExpireTime' => 123456, 'campaignIdentifier' => 'testCampaign',
+                ]],
+                'mkabtesting'
+            )
         );
-        $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
             $action,
             'setElementsToBeRenderedToCookie',
-            array(123, 456)
+            [123, 456]
         );
     }
 
@@ -257,76 +301,74 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     public function testGetElementsToBeRenderedIfNoCookie()
     {
         $repository = $this->getMock(
-            'Tx_Mkabtesting_Repository_RenderedContentElements',
-            array('search')
+            RenderedContentElements::class,
+            ['search']
         );
 
-        $expectedFields = array(
-            'CONTENTELEMENT.content_element' => array(
-                OP_IN_INT => '1,2,3,4'
+        $expectedFields = [
+            'CONTENTELEMENT.content_element' => [
+                OP_IN_INT => '1,2,3,4',
+            ],
+            'CONTENTELEMENT.campaign_identifier' => [
+                OP_EQ => 'testCampaign',
+            ],
+        ];
+        $expectedOptions = [
+            'orderby' => ['CONTENTELEMENT.render_count' => 'ASC'],
+            'limit' => 2,
+        ];
+        $elementModels = [
+            0 => GeneralUtility::makeInstance(
+                RenderedContentElement::class,
+                ['uid' => 1, 'content_element' => 3]
             ),
-            'CONTENTELEMENT.campaign_identifier' => array(
-                OP_EQ => 'testCampaign'
+            1 => GeneralUtility::makeInstance(
+                RenderedContentElement::class,
+                ['uid' => 2, 'content_element' => 4]
             ),
-        );
-        $expectedOptions = array(
-            'orderby' => array('CONTENTELEMENT.render_count' => 'ASC'),
-            'limit' => 2
-        );
-        $elementModels = array(
-            0 => tx_rnbase::makeInstance(
-                'Tx_Mkabtesting_Model_RenderedContentElement',
-                array('uid' => 1, 'content_element' => 3)
-            ),
-            1 => tx_rnbase::makeInstance(
-                'Tx_Mkabtesting_Model_RenderedContentElement',
-                array('uid' => 2, 'content_element' => 4)
-            ),
-        );
+        ];
         $repository->expects($this->once())
             ->method('search')
             ->with($expectedFields, $expectedOptions)
-            ->will(($this->returnValue($elementModels)));
+            ->will($this->returnValue($elementModels));
 
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array(
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            [
                 'getRenderedContentElementsRepository',
                 'assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable',
                 'incrementCountForRenderedContentElement',
-                'setElementsToBeRenderedToCookie'
-            )
+                'setElementsToBeRenderedToCookie',
+            ]
         );
         $action->expects($this->once())
             ->method('getRenderedContentElementsRepository')
-            ->will(($this->returnValue($repository)));
+            ->will($this->returnValue($repository));
 
         $action->expects($this->once())
             ->method('assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable');
 
-        $action->expects($this->at(2))
+        $action->expects($this->exactly(2))
             ->method('incrementCountForRenderedContentElement')
-            ->with($elementModels[0]);
-
-        $action->expects($this->at(3))
-            ->method('incrementCountForRenderedContentElement')
-            ->with($elementModels[1]);
+            ->withConsecutive([$elementModels[0]], [$elementModels[1]]);
 
         $action->expects($this->once())
             ->method('setElementsToBeRenderedToCookie')
-            ->with(array(3, 4));
+            ->with([3, 4]);
 
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
-                'numberOfElementsToDisplay' => 2
-            )),
-            'mkabtesting'
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
+                    'numberOfElementsToDisplay' => 2,
+                ]],
+                'mkabtesting'
+            )
         );
-        $action->setConfigurations($configurations);
 
         $this->assertEquals(
-            array(3, 4),
+            [3, 4],
             $this->callInaccessibleMethod($action, 'getElementsToBeRendered'),
             'falsche element uids in array'
         );
@@ -339,76 +381,74 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     {
         $_COOKIE['AB-Testing-testCampaign'] = '1,5';
         $repository = $this->getMock(
-            'Tx_Mkabtesting_Repository_RenderedContentElements',
-            array('search')
+            RenderedContentElements::class,
+            ['search']
         );
 
-        $expectedFields = array(
-            'CONTENTELEMENT.content_element' => array(
-                OP_IN_INT => '1,2,3,4'
+        $expectedFields = [
+            'CONTENTELEMENT.content_element' => [
+                OP_IN_INT => '1,2,3,4',
+            ],
+            'CONTENTELEMENT.campaign_identifier' => [
+                OP_EQ => 'testCampaign',
+            ],
+        ];
+        $expectedOptions = [
+            'orderby' => ['CONTENTELEMENT.render_count' => 'ASC'],
+            'limit' => 2,
+        ];
+        $elementModels = [
+            0 => GeneralUtility::makeInstance(
+                RenderedContentElement::class,
+                ['uid' => 1, 'content_element' => 3]
             ),
-            'CONTENTELEMENT.campaign_identifier' => array(
-                OP_EQ => 'testCampaign'
+            1 => GeneralUtility::makeInstance(
+                RenderedContentElement::class,
+                ['uid' => 2, 'content_element' => 4]
             ),
-        );
-        $expectedOptions = array(
-            'orderby' => array('CONTENTELEMENT.render_count' => 'ASC'),
-            'limit' => 2
-        );
-        $elementModels = array(
-            0 => tx_rnbase::makeInstance(
-                'Tx_Mkabtesting_Model_RenderedContentElement',
-                array('uid' => 1, 'content_element' => 3)
-            ),
-            1 => tx_rnbase::makeInstance(
-                'Tx_Mkabtesting_Model_RenderedContentElement',
-                array('uid' => 2, 'content_element' => 4)
-            ),
-        );
+        ];
         $repository->expects($this->once())
             ->method('search')
             ->with($expectedFields, $expectedOptions)
-            ->will(($this->returnValue($elementModels)));
+            ->will($this->returnValue($elementModels));
 
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array(
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            [
                 'getRenderedContentElementsRepository',
                 'assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable',
                 'incrementCountForRenderedContentElement',
-                'setElementsToBeRenderedToCookie'
-            )
+                'setElementsToBeRenderedToCookie',
+            ]
         );
         $action->expects($this->once())
             ->method('getRenderedContentElementsRepository')
-            ->will(($this->returnValue($repository)));
+            ->will($this->returnValue($repository));
 
         $action->expects($this->once())
             ->method('assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable');
 
-        $action->expects($this->at(2))
+        $action->expects($this->exactly(2))
             ->method('incrementCountForRenderedContentElement')
-            ->with($elementModels[0]);
-
-        $action->expects($this->at(3))
-            ->method('incrementCountForRenderedContentElement')
-            ->with($elementModels[1]);
+            ->withConsecutive([$elementModels[0]], [$elementModels[1]]);
 
         $action->expects($this->once())
             ->method('setElementsToBeRenderedToCookie')
-            ->with(array(3, 4));
+            ->with([3, 4]);
 
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
-                'numberOfElementsToDisplay' => 2
-            )),
-            'mkabtesting'
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
+                    'numberOfElementsToDisplay' => 2,
+                ]],
+                'mkabtesting'
+            )
         );
-        $action->setConfigurations($configurations);
 
         $this->assertEquals(
-            array(3, 4),
+            [3, 4],
             $this->callInaccessibleMethod($action, 'getElementsToBeRendered'),
             'falsche element uids in array'
         );
@@ -421,22 +461,22 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     {
         $_COOKIE['AB-Testing-testCampaign'] = '1,2';
         $repository = $this->getMock(
-            'Tx_Mkabtesting_Repository_RenderedContentElements',
-            array('search')
+            RenderedContentElements::class,
+            ['search']
         );
 
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array(
+        $action = $this->getAccessibleMock(
+            ShowContentElements::class,
+            [
                 'getRenderedContentElementsRepository',
                 'assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable',
                 'incrementCountForRenderedContentElement',
-                'setElementsToBeRenderedToCookie'
-            )
+                'setElementsToBeRenderedToCookie',
+            ]
         );
         $action->expects($this->never())
             ->method('getRenderedContentElementsRepository')
-            ->will(($this->returnValue($repository)));
+            ->will($this->returnValue($repository));
 
         $action->expects($this->never())
             ->method('assureAllElementsOfCurrentCampaignAreInRenderedContentElementsTable');
@@ -447,17 +487,19 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
         $action->expects($this->never())
         ->method('setElementsToBeRenderedToCookie');
 
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
-                'numberOfElementsToDisplay' => 2
-            )),
-            'mkabtesting'
+        $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
+                    'numberOfElementsToDisplay' => 2,
+                ]],
+                'mkabtesting'
+            )
         );
-        $action->setConfigurations($configurations);
 
         $this->assertEquals(
-            array(1, 2),
+            [1, 2],
             $this->callInaccessibleMethod($action, 'getElementsToBeRendered'),
             'falsche element uids in array'
         );
@@ -469,58 +511,56 @@ class Tx_Mkabtesting_Action_ShowContentElementsTest
     public function testHandleRequestRendersElementsCorrect()
     {
         $contentObject = $this->getMock(
-            tx_rnbase_util_Typo3Classes::getContentObjectRendererClass(),
-            array('cObjGetSingle')
+            ContentObjectRenderer::class,
+            ['cObjGetSingle']
         );
 
-        $contentObject->expects($this->at(0))
+        $contentObject->expects($this->exactly(2))
             ->method('cObjGetSingle')
-            ->with(
-                'RECORDS',
-                array(
-                    'tables' => 'tt_content',
-                    'source' => 123,
-                    'dontCheckPid' => 1
-                )
+            ->withConsecutive(
+                [
+                    'RECORDS',
+                    [
+                        'tables' => 'tt_content',
+                        'source' => 123,
+                        'dontCheckPid' => 1,
+                    ],
+                ],
+                [
+                    'RECORDS',
+                    [
+                        'tables' => 'tt_content',
+                        'source' => 456,
+                        'dontCheckPid' => 1,
+                    ],
+                ]
             )
-            ->will(($this->returnValue('erstes element ')));
-        $contentObject->expects($this->at(1))
-            ->method('cObjGetSingle')
-            ->with(
-                'RECORDS',
-                array(
-                    'tables' => 'tt_content',
-                    'source' => 456,
-                    'dontCheckPid' => 1
-                )
-            )
-            ->will(($this->returnValue('zweites element')));
+            ->willReturnOnConsecutiveCalls('erstes element ', 'zweites element');
 
-        $action = $this->getMock(
-            'Tx_Mkabtesting_Action_ShowContentElements',
-            array('getElementsToBeRendered')
-        );
+        $action = $this->getAccessibleMock(ShowContentElements::class, ['getElementsToBeRendered']);
         $action->expects($this->once())
             ->method('getElementsToBeRendered')
-            ->will(($this->returnValue(array(123, 456))));
+            ->will($this->returnValue([123, 456]));
 
-        $configurations = $this->createConfigurations(
-            array('showContentElements.' => array(
-                'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
-                'numberOfElementsToDisplay' => 2
-            )),
-            'mkabtesting',
-            '',
-            $contentObject
+        $request = $this->setRequestToAction(
+            $action,
+            TestUtility::createConfigurations(
+                ['showContentElements.' => [
+                    'elements' => '1,2,3,4', 'campaignIdentifier' => 'testCampaign',
+                    'numberOfElementsToDisplay' => 2,
+                ]],
+                'mkabtesting',
+                '',
+                $contentObject
+            )
         );
-        $action->setConfigurations($configurations);
 
         $parameters = $viewData = null;
         $this->assertEquals(
             'erstes element zweites element',
             $this->callInaccessibleMethod(
-                array($action, 'handleRequest'),
-                array(&$parameters, &$configurations, &$viewData)
+                [$action, 'handleRequest'],
+                [$request]
             ),
             'falsche element uids in array'
         );

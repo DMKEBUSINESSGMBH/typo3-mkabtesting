@@ -1,13 +1,11 @@
-includeLibs.tx_rnbase_controller = EXT:rn_base/class.tx_rnbase_controller.php
-
 plugin.tx_mkabtesting = USER
 plugin.tx_mkabtesting {
     flexform = Configuration/Flexform/actions.xml
     userFunc = tx_rnbase_controller->main
-    defaultAction = Tx_Mkabtesting_Action_ShowContentElements
+    defaultAction = DMK\Mkabtesting\Action\ShowContentElements
     qualifier = mkabtesting
     templatePath = EXT:mkabtesting/Resources/Private/Templates/Html
-    locallangFilename = EXT:mkabtesting/Resources/Private/Language/actions.xml
+    locallangFilename =
     extensionKey = mkabtesting
 }
 

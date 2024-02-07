@@ -29,11 +29,8 @@ if (!defined('TYPO3')) {
     exit('Access denied.');
 }
 
-TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Imaging\IconRegistry::class)->registerIcon(
-    'ext-mkabtesting-wizard-icon',
-    TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    ['source' => 'EXT:mkabtesting/Resources/Public/Icons/Extension.gif']
-);
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mkabtesting/Configuration/TSconfig/ContentElementWizard.tsconfig">'
+TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    'mkabtesting',
+    'Configuration/TypoScript/',
+    'MK A/B Testing'
 );

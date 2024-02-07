@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="messages" date="2022-06-17T09:33:24Z" product-name="mkabtesting">
+        <header/>
+        <body>
+            <trans-unit id="tx_mkabtesting_rendered_content_elements" resname="error" >
+                <source>Gerenderte Elemente</source>
+            </trans-unit>
+            <trans-unit id="tx_mkabtesting_rendered_content_elements.campaign_identifier" resname="error" >
+                <source>Kampagnenbezeichner</source>
+            </trans-unit>
+            <trans-unit id="tx_mkabtesting_rendered_content_elements.render_count" resname="error" >
+                <source>Anzahl gerendert</source>
+            </trans-unit>
+            <trans-unit id="tx_mkabtesting_rendered_content_elements.content_element" resname="error" >
+                <source>Inhaltselement</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -29,11 +29,20 @@ if (!defined('TYPO3')) {
     exit('Access denied.');
 }
 
-TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Imaging\IconRegistry::class)->registerIcon(
-    'ext-mkabtesting-wizard-icon',
-    TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    ['source' => 'EXT:mkabtesting/Resources/Public/Icons/Extension.gif']
-);
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mkabtesting/Configuration/TSconfig/ContentElementWizard.tsconfig">'
-);
+call_user_func(function () {
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['tx_mkabtesting'] =
+        'layout,select_key,pages';
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['tx_mkabtesting'] = 'pi_flexform';
+    TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+        'tx_mkabtesting',
+        'FILE:EXT:mkabtesting/Configuration/Flexform/actions.xml'
+    );
+    TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+        [
+            'LLL:EXT:mkabtesting/Resources/Private/Language/flexform.xlf:plugin.mkabtesting.label',
+            'tx_mkabtesting',
+        ],
+        'list_type',
+        'mktegutfe'
+    );
+});
