@@ -9,7 +9,7 @@
  * Only the data in the array - everything else is removed by next
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF['mkabtesting'] = array(
     'title' => 'MK A/B Testing',
     'description' => 'A/B Testing of content elements',
     'category' => 'plugin',
@@ -30,9 +30,9 @@ $EM_CONF[$_EXTKEY] = array(
     'version' => '3.0.2',
     'constraints' => array(
         'depends' => array(
-            'rn_base' => '1.4.0-',
-            'typo3' => '6.2.0-8.7.99',
-            'mklib' => '3.0.0-'
+            'rn_base' => '1.16.0-',
+            'typo3' => '11.5.0-11.5.99',
+            'mklib' => '11.0.0-'
         ),
         'conflicts' => array(),
         'suggests' => array()
