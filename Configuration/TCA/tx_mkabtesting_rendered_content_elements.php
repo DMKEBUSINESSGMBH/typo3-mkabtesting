@@ -1,5 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
