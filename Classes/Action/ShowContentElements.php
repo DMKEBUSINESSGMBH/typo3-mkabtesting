@@ -167,6 +167,7 @@ class ShowContentElements extends AbstractAction
                 $repository->create([
                     'campaign_identifier' => $currentCampaignIdentifier,
                     'content_element' => $elementUid,
+                    'pid' => \Sys25\RnBase\Utility\TYPO3::getTSFE()->id,
                 ]);
             }
         }

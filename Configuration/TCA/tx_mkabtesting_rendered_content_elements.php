@@ -97,6 +97,8 @@ return [
                 ],
             ],
         ],
+        // so the column is not discarded when writing data through the repository
+        'pid' => [],
     ],
     'types' => [
         '0' => ['showitem' => 'hidden;;1;;1-1-1,campaign_identifier,content_element,render_count'],
